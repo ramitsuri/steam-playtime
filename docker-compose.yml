@@ -1,0 +1,10 @@
+
+version: '3.8'
+
+services:
+  playpulse:
+    build: .
+    container_name: playpulse-app
+    ports:
+      - "9999:80"
+    restart: always

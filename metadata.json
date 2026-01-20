@@ -1,0 +1,5 @@
+{
+  "name": "PlayPulse: Local Gaming Insights",
+  "description": "Analyze your local PlayTime Decky plugin SQLite gaming database to visualize playtime and trends. Processes everything locally using your game dictionary.",
+  "requestFramePermissions": []
+}

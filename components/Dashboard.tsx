@@ -1,10 +1,9 @@
-
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   LineChart, Line, AreaChart, Area, Cell, LabelList
 } from 'recharts';
-import { StatsData, GamingSession } from '../types';
+import { StatsData } from '../types';
 
 interface DashboardProps {
   stats: StatsData;

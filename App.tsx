@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AnalysisState, StatsData } from './types';
 import { processDatabase } from './services/sqliteService';
 import Dashboard from './components/Dashboard';
@@ -8,6 +7,31 @@ const App: React.FC = () => {
   const [state, setState] = useState<AnalysisState>(AnalysisState.IDLE);
   const [stats, setStats] = useState<StatsData | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Auto-load storage.db from /input directory if it exists
+  useEffect(() => {
+    const autoLoadDatabase = async () => {
+      try {
+        const response = await fetch('/input/storage.db');
+        if (response.ok) {
+          setState(AnalysisState.LOADING_DB);
+          const buffer = await response.arrayBuffer();
+          setState(AnalysisState.PROCESSING);
+          const processedStats = await processDatabase(buffer);
+          setStats(processedStats);
+          setState(AnalysisState.READY);
+        } else {
+          console.log("No auto-load database found at /input/storage.db, showing file picker.");
+        }
+      } catch (err) {
+        console.log("Auto-load failed or file not found:", err);
+        // Fallback to IDLE state for manual upload
+        setState(AnalysisState.IDLE);
+      }
+    };
+
+    autoLoadDatabase();
+  }, []);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -48,7 +72,7 @@ const App: React.FC = () => {
               PlayPulse
             </h1>
           </div>
-          {state !== AnalysisState.IDLE && (
+          {(state === AnalysisState.READY || state === AnalysisState.ERROR) && (
             <button 
               onClick={reset}
               className="px-4 py-1.5 text-sm font-bold text-gray-400 hover:text-white hover:bg-gray-800 rounded-xl transition-all"
@@ -80,6 +104,9 @@ const App: React.FC = () => {
                 </div>
                 <input type="file" className="hidden" accept=".db,.sqlite,.sqlite3" onChange={handleFileUpload} />
               </label>
+            </div>
+            <div className="mt-8 text-sm text-gray-500 italic">
+              Tip: Mount your database to <code className="bg-gray-800 px-1 rounded">/input/storage.db</code> in Docker to skip this step.
             </div>
           </div>
         )}

@@ -1,4 +1,3 @@
-
 version: '3.8'
 
 services:
@@ -7,4 +6,6 @@ services:
     container_name: playpulse-app
     ports:
       - "9999:80"
+    volumes:
+      - ./input:/usr/share/nginx/html/input:ro
     restart: always

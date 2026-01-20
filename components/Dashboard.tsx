@@ -542,7 +542,7 @@ const Dashboard: React.FC<DashboardProps> = ({ stats }) => {
             <ResponsiveContainer width="100%" height={Math.max(500, lifetimeRanking.length * 40)}>
               <BarChart data={lifetimeRanking} layout="vertical" margin={{ left: 10, right: 180 }}>
                 <XAxis type="number" hide />
-                <YAxis dataKey="game_id" type="category" axisLine={false} tickLine={false} width={180} tick={({ x, y, payload }) => {
+                <YAxis dataKey="game_id" type="category" axisLine={false} tickLine={false} width={180} tick={({ x, y, payload }: any) => {
                   const game = lifetimeRanking.find(g => Number(g.game_id) === Number(payload.value));
                   return (
                     <text x={x - 10} y={y} dy={4} textAnchor="end" fill="#9ca3af" fontSize={11} fontWeight={600} className="cursor-pointer hover:fill-blue-400" onClick={() => setSelectedGameId(Number(payload.value))}>

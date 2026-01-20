@@ -141,7 +141,7 @@ export async function processDatabase(fileBuffer: ArrayBuffer): Promise<StatsDat
     totalHours: Math.round((sessions.reduce((sum: number, s: GamingSession) => sum + s.duration, 0) / 60) * 10) / 10,
     topGames,
     weeklyDistribution: days.map((day, i) => ({ day, hours: Math.round(weeklyMap[i] * 10) / 10 })),
-    monthlyDistribution: Object.entries(monthMap).sort((a, b) => a[0].localeCompare(b[0])).map(([m, h]) => ({ month: m, hours: Math.round(h * 10) / 10 })),
+    monthlyDistribution: Object.entries(monthMap).sort((a: [string, number], b: [string, number]) => a[0].localeCompare(b[0])).map(([m, h]) => ({ month: m, hours: Math.round(h * 10) / 10 })),
     timeOfDayDistribution: hourMap.map((hrs, i) => ({ hour: `${String(i).padStart(2, '0')}:00`, hours: Math.round(hrs * 10) / 10 })),
     sessions
   };
